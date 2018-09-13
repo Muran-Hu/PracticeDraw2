@@ -1,11 +1,20 @@
 package com.hencoder.hencoderpracticedraw2.practice;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.ComposeShader;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.Shader;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.hencoder.hencoderpracticedraw2.R;
 
 public class Practice05ComposeShaderView extends View {
     Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -34,6 +43,18 @@ public class Practice05ComposeShaderView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        canvas.drawCircle(200, 200, 200, paint);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+        Bitmap src = BitmapFactory.decodeResource(getResources(), R.drawable.batman);
+        Bitmap dst = BitmapFactory.decodeResource(getResources(), R.drawable.batman_logo);
+
+        Shader srcShader = new BitmapShader(src, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        Shader dstShader = new BitmapShader(dst, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+
+        Shader comp = new ComposeShader(srcShader, dstShader, PorterDuff.Mode.DARKEN);
+
+        paint.setShader(comp);
+
+        canvas.drawCircle(300, 300, 300, paint);
     }
 }
